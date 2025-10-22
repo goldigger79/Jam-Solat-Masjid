@@ -13,6 +13,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #0a192f;
             color: #e6f1ff;
+            transition: background-image 0.5s ease-in-out;
         }
         .glass-panel {
             background: rgba(13, 38, 76, 0.6);
@@ -27,6 +28,20 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(23, 162, 184, 0.7);
         }
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -34,7 +49,7 @@
     <div class="max-w-4xl mx-auto space-y-6">
         <!-- HEADER -->
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-cyan-300 tracking-wide">Waktu Solat Digital</h1>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-cyan-300 tracking-wide">Jam Waktu Solat Digital</h1>
             <div class="mt-4">
                 <label for="zone-select" class="sr-only">Pilih Zon</label>
                 <select id="zone-select" class="w-full max-w-md mx-auto bg-slate-700 text-white border border-slate-500 rounded-lg p-3 text-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none">
@@ -135,206 +150,247 @@
                 </div>
             </div>
         </div>
+
+        <!-- Scrolling Text Panel -->
+        <div id="scrolling-text-container" class="glass-panel p-4" style="display: none;">
+            <div class="marquee-container">
+                <p id="scrolling-text-display" class="marquee-text"></p>
+            </div>
+        </div>
+
+        <!-- Static Memo Panel -->
+        <div id="static-memo-container" class="glass-panel p-6" style="display: none;">
+            <h3 class="text-lg font-semibold text-cyan-300 mb-2">Notis / Pengumuman</h3>
+            <p id="static-memo-display" class="text-slate-300 whitespace-pre-wrap"></p>
+        </div>
         
         <!-- Countdown & Next Prayer -->
         <div class="glass-panel p-6 text-center">
             <h3 class="text-lg font-semibold text-cyan-300">MASA BERBAKI KE <span id="next-prayer">...</span></h3>
             <p id="countdown" class="text-5xl font-bold mt-2">--:--:--</p>
         </div>
+        
+        <footer class="text-center text-slate-400 text-sm mt-8">
+             <p>Copyright @ MAB Tech Synergy 2025 | <a href="admin.html" class="text-cyan-400 hover:underline">Admin Panel</a></p>
+        </footer>
     </div>
 
-    <script>
-    /* --------------------------------------------------
-       SCRIPT - Waktu Solat Malaysia (Zon)
-       Versi stabil & robust untuk web app anda
-    -------------------------------------------------- */
-    
-    let prayerTimesData = {};
-    let nextPrayerInfo = null;
-    
-    // Dapatkan elemen paparan masa dan zon
-    const prayerTimeDisplays = document.querySelectorAll('.time-display');
-    const zoneSelect = document.getElementById('zone-select');
-    const countdownDisplay = document.getElementById('countdown');
-    const nextPrayerDisplay = document.getElementById('next-prayer');
-    const currentTimeEl = document.getElementById('current-time');
-    const currentDateEl = document.getElementById('current-date');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    const prayerTimeDivs = {
-        Subuh: document.getElementById('subuh'),
-        Syuruk: document.getElementById('syuruk'),
-        Zohor: document.getElementById('zohor'),
-        Asar: document.getElementById('asar'),
-        Maghrib: document.getElementById('maghrib'),
-        Isyak: document.getElementById('isyak'),
-    };
-    
-    const fetchPrayerTimes = async (zone) => {
-        // Menggunakan API rasmi e-solat JAKIM
-        const apiUrl = `https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat&period=today&zone=${zone}`;
-
-        try {
-            const response = await fetch(apiUrl);
-            if (!response.ok) {
-                throw new Error(`Ralat capaian API (status ${response.status})`);
-            }
-            const data = await response.json();
-
-            // Semak jika data prayerTime wujud dan tidak kosong
-            if (!data.prayerTime || data.prayerTime.length === 0) {
-                throw new Error('Struktur data API tidak sah atau kosong.');
-            }
-
-            const todayPrayer = data.prayerTime[0];
-
-            // Fungsi untuk format masa ke HH:MM
-            const formatTime = (timeStr) => {
-                if (!timeStr) return '--:--';
-                const date = new Date(`1970-01-01T${timeStr}`);
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                return `${hours}:${minutes}`;
-            };
-            
-            prayerTimesData = {
-                Subuh: formatTime(todayPrayer.fajr),
-                Syuruk: formatTime(todayPrayer.syuruk),
-                Zohor: formatTime(todayPrayer.dhuhr),
-                Asar: formatTime(todayPrayer.asr),
-                Maghrib: formatTime(todayPrayer.maghrib),
-                Isyak: formatTime(todayPrayer.isha)
-            };
-
-            updatePrayerTimeUI();
-            findNextPrayer(new Date());
-
-        } catch (err) {
-            console.error("Ralat ambil data:", err);
-            nextPrayerDisplay.textContent = `Ralat: ${err.message}`;
-            prayerTimeDisplays.forEach(el => el.textContent = 'Ralat');
-        }
-    };
-    
-    // Kemas kini paparan waktu solat
-    const updatePrayerTimeUI = () => {
-        for (const prayer in prayerTimesData) {
-            const div = prayerTimeDivs[prayer];
-            if (!div) continue;
-            const timeEl = div.querySelector('.time-display');
-            if (timeEl) timeEl.textContent = prayerTimesData[prayer];
-        }
-    };
-    
-    // Cari solat seterusnya
-    const findNextPrayer = (now) => {
-        const buildDateFromHM = (dateObj, hm) => {
-            if (!hm || hm === '--:--') return null;
-            const [hours, minutes] = hm.split(':');
-            const d = new Date(dateObj);
-            d.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-            return d;
+        // Konfigurasi Firebase untuk aplikasi web anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXzgZhN6ZVDfu_bhRW_Wf0rmEpC1QNi5Q",
+            authDomain: "jam-waktu-solat.firebaseapp.com",
+            databaseURL: "https://jam-waktu-solat-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "jam-waktu-solat",
+            storageBucket: "jam-waktu-solat.appspot.com",
+            messagingSenderId: "195350385788",
+            appId: "1:195350385788:web:90adc0ebfc1e27ec2725f9",
+            measurementId: "G-CK12K8WXGH"
         };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
     
-        const order = ['Subuh', 'Zohor', 'Asar', 'Maghrib', 'Isyak'];
-        let nextPrayer = null;
-    
-        for (const name of order) {
-            const hm = prayerTimesData[name];
-            const time = buildDateFromHM(now, hm);
-            if (time && time > now) {
-                nextPrayer = { name, time };
-                break;
+        let prayerTimesData = {};
+        let nextPrayerInfo = null;
+        
+        const prayerTimeDisplays = document.querySelectorAll('.time-display');
+        const zoneSelect = document.getElementById('zone-select');
+        const countdownDisplay = document.getElementById('countdown');
+        const nextPrayerDisplay = document.getElementById('next-prayer');
+        const currentTimeEl = document.getElementById('current-time');
+        const currentDateEl = document.getElementById('current-date');
+        const scrollingTextDisplay = document.getElementById('scrolling-text-display');
+        const staticMemoDisplay = document.getElementById('static-memo-display');
+        const scrollingTextContainer = document.getElementById('scrolling-text-container');
+        const staticMemoContainer = document.getElementById('static-memo-container');
+
+        const prayerTimeDivs = {
+            Subuh: document.getElementById('subuh'),
+            Syuruk: document.getElementById('syuruk'),
+            Zohor: document.getElementById('zohor'),
+            Asar: document.getElementById('asar'),
+            Maghrib: document.getElementById('maghrib'),
+            Isyak: document.getElementById('isyak'),
+        };
+        
+        const fetchPrayerTimes = async (zone) => {
+            const apiUrl = `https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat&period=today&zone=${zone}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`Ralat API (status ${response.status})`);
+                const data = await response.json();
+                if (!data.prayerTime || data.prayerTime.length === 0) throw new Error('Data API tidak sah.');
+                
+                const todayPrayer = data.prayerTime[0];
+                const formatTime = (timeStr) => {
+                    if (!timeStr) return '--:--';
+                    const date = new Date(`1970-01-01T${timeStr}`);
+                    return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                };
+                
+                prayerTimesData = {
+                    Subuh: formatTime(todayPrayer.fajr),
+                    Syuruk: formatTime(todayPrayer.syuruk),
+                    Zohor: formatTime(todayPrayer.dhuhr),
+                    Asar: formatTime(todayPrayer.asr),
+                    Maghrib: formatTime(todayPrayer.maghrib),
+                    Isyak: formatTime(todayPrayer.isha)
+                };
+                updatePrayerTimeUI();
+                findNextPrayer(new Date());
+            } catch (err) {
+                console.error("Ralat ambil data:", err);
+                nextPrayerDisplay.textContent = `Ralat: ${err.message}`;
+                prayerTimeDisplays.forEach(el => el.textContent = 'Ralat');
             }
-        }
-    
-        // Jika tiada lagi hari ini → ambil Subuh esok
-        if (!nextPrayer && prayerTimesData.Subuh) {
-            const tomorrow = new Date(now);
-            tomorrow.setDate(now.getDate() + 1);
-            const subuhTime = buildDateFromHM(tomorrow, prayerTimesData.Subuh);
-            if (subuhTime) nextPrayer = { name: 'Subuh', time: subuhTime };
-        }
-    
-        nextPrayerInfo = nextPrayer;
-        updateNextPrayerUI();
-    };
-    
-    // Paparkan solat seterusnya
-    const updateNextPrayerUI = () => {
-        // Kemas kini penanda solat seterusnya
-        Object.values(prayerTimeDivs).forEach(div => div.classList.remove('next-prayer'));
-        if (nextPrayerInfo && prayerTimeDivs[nextPrayerInfo.name]) {
-            prayerTimeDivs[nextPrayerInfo.name].classList.add('next-prayer');
-        }
-
-        if (!nextPrayerInfo) {
-            nextPrayerDisplay.textContent = "Tiada maklumat";
-            countdownDisplay.textContent = "--:--:--";
-            return;
-        }
-        nextPrayerDisplay.textContent = `${nextPrayerInfo.name.toUpperCase()} (${nextPrayerInfo.time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})})`;
-    };
-    
-    // Kira undur masa ke solat seterusnya
-    const updateCountdown = () => {
-        if (!nextPrayerInfo) return;
-    
-        const now = new Date();
-        const diff = nextPrayerInfo.time - now;
-        if (diff <= 0) {
-            // Masa solat telah tiba, muat semula data untuk hari seterusnya jika perlu
-            setTimeout(() => fetchPrayerTimes(zoneSelect.value), 2000); // Tunggu 2 saat sebelum muat semula
-            countdownDisplay.textContent = "00:00:00";
-            return;
-        }
-    
-        const h = Math.floor(diff / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-    
-        countdownDisplay.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-    };
-
-    // Fungsi untuk kemas kini jam utama
-    const updateClock = () => {
-        const now = new Date();
-        currentTimeEl.textContent = now.toLocaleTimeString('ms-MY', { hour12: false });
-        currentDateEl.textContent = now.toLocaleDateString('ms-MY', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
-    };
-    
-    // Penukaran zon
-    zoneSelect.addEventListener('change', () => {
-        const zone = zoneSelect.value;
-        if (zone) {
-            fetchPrayerTimes(zone);
-        }
-    });
-    
-    // Inisialisasi awal
-    window.addEventListener('DOMContentLoaded', () => {
-        const zone = zoneSelect.value || 'SGR01';
-        fetchPrayerTimes(zone);
-        updateClock(); // Panggil sekali untuk elak kelengahan paparan awal
-
-        setInterval(() => {
-            updateClock();
-            updateCountdown();
-        }, 1000);
-
-        // Tambah semakan setiap minit untuk pastikan data sentiasa segar jika dibiarkan lama
-        setInterval(() => {
+        };
+        
+        const updatePrayerTimeUI = () => {
+            for (const prayer in prayerTimesData) {
+                const div = prayerTimeDivs[prayer];
+                if (div) {
+                    const timeEl = div.querySelector('.time-display');
+                    if (timeEl) timeEl.textContent = prayerTimesData[prayer];
+                }
+            }
+        };
+        
+        const findNextPrayer = (now) => {
+            const buildDateFromHM = (dateObj, hm) => {
+                if (!hm || hm === '--:--') return null;
+                const [hours, minutes] = hm.split(':');
+                const d = new Date(dateObj);
+                d.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                return d;
+            };
+        
+            const order = ['Subuh', 'Zohor', 'Asar', 'Maghrib', 'Isyak'];
+            let nextPrayer = null;
+        
+            for (const name of order) {
+                const time = buildDateFromHM(now, prayerTimesData[name]);
+                if (time && time > now) {
+                    nextPrayer = { name, time };
+                    break;
+                }
+            }
+        
+            if (!nextPrayer && prayerTimesData.Subuh) {
+                const tomorrow = new Date(now);
+                tomorrow.setDate(now.getDate() + 1);
+                nextPrayer = { name: 'Subuh', time: buildDateFromHM(tomorrow, prayerTimesData.Subuh) };
+            }
+        
+            nextPrayerInfo = nextPrayer;
+            updateNextPrayerUI();
+        };
+        
+        const updateNextPrayerUI = () => {
+            Object.values(prayerTimeDivs).forEach(div => div.classList.remove('next-prayer'));
+            if (nextPrayerInfo && prayerTimeDivs[nextPrayerInfo.name]) {
+                prayerTimeDivs[nextPrayerInfo.name].classList.add('next-prayer');
+            }
+            if (!nextPrayerInfo) {
+                nextPrayerDisplay.textContent = "Tiada maklumat";
+                countdownDisplay.textContent = "--:--:--";
+                return;
+            }
+            nextPrayerDisplay.textContent = `${nextPrayerInfo.name.toUpperCase()} (${nextPrayerInfo.time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})})`;
+        };
+        
+        const updateCountdown = () => {
+            if (!nextPrayerInfo) return;
             const now = new Date();
-            // Panggil semula fetchPrayerTimes jika sudah melepasi tengah malam
-            if (now.getHours() === 0 && now.getMinutes() === 1) {
-                fetchPrayerTimes(zoneSelect.value);
+            const diff = nextPrayerInfo.time - now;
+            if (diff <= 0) {
+                setTimeout(() => fetchPrayerTimes(zoneSelect.value), 2000);
+                countdownDisplay.textContent = "00:00:00";
+                return;
             }
-        }, 60000);
-    });
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            countdownDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        };
+
+        const updateClock = () => {
+            const now = new Date();
+            currentTimeEl.textContent = now.toLocaleTimeString('ms-MY', { hour12: false });
+            currentDateEl.textContent = now.toLocaleDateString('ms-MY', {
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+            });
+        };
+
+        const listenToFirebaseData = () => {
+            const dataRef = ref(db, 'paparan/');
+            onValue(dataRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const mesej = data.mesej || '';
+                    const memo = data.memo || '';
+                    const gambar = data.gambar || '';
+
+                    // Kemas kini teks bergerak
+                    if (mesej.trim() !== '') {
+                        scrollingTextDisplay.textContent = mesej;
+                        scrollingTextContainer.style.display = 'block';
+                    } else {
+                        scrollingTextContainer.style.display = 'none';
+                    }
+
+                    // Kemas kini memo statik
+                    if (memo.trim() !== '') {
+                        staticMemoDisplay.textContent = memo;
+                        staticMemoContainer.style.display = 'block';
+                    } else {
+                        staticMemoContainer.style.display = 'none';
+                    }
+
+                    // Kemas kini gambar latar
+                    if (gambar.trim() !== '') {
+                        document.body.style.backgroundImage = `url('${gambar}')`;
+                        document.body.style.backgroundSize = 'cover';
+                        document.body.style.backgroundPosition = 'center';
+                        document.body.style.backgroundAttachment = 'fixed';
+                    } else {
+                        document.body.style.backgroundImage = 'none';
+                    }
+                } else {
+                    // Sembunyikan jika tiada data di Firebase
+                    scrollingTextContainer.style.display = 'none';
+                    staticMemoContainer.style.display = 'none';
+                    document.body.style.backgroundImage = 'none';
+                }
+            }, (error) => {
+                console.error("Firebase read failed: " + error.name);
+            });
+        };
+        
+        zoneSelect.addEventListener('change', (e) => fetchPrayerTimes(e.target.value));
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialZone = zoneSelect.value || 'SGR01';
+            fetchPrayerTimes(initialZone);
+            updateClock();
+            listenToFirebaseData(); // Mula mendengar data dari Firebase
+
+            setInterval(() => {
+                updateClock();
+                updateCountdown();
+            }, 1000);
+            
+            setInterval(() => {
+                const now = new Date();
+                if (now.getHours() === 0 && now.getMinutes() === 1) {
+                    fetchPrayerTimes(zoneSelect.value);
+                }
+            }, 60000);
+        });
     </script>
 </body>
 </html>
