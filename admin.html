@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Jam Waktu Solat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a192f;
+            color: #e6f1ff;
+        }
+        .glass-panel {
+            background: rgba(13, 38, 76, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        input, textarea {
+             width: 100%;
+             background-color: #1e293b; /* slate-800 */
+             border: 1px solid #475569; /* slate-600 */
+             border-radius: 0.5rem;
+             padding: 0.75rem;
+             color: #e6f1ff;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #64748b; /* slate-500 */
+        }
+        input:focus, textarea:focus {
+            outline: 2px solid #22d3ee; /* cyan-400 */
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex items-center justify-center min-h-screen">
+    <div class="max-w-xl w-full">
+        <div class="glass-panel p-8 space-y-6">
+            <h1 class="text-3xl font-bold text-center text-cyan-300">Panel Admin</h1>
+
+            <div>
+                <label for="mesej" class="block text-sm font-medium text-slate-300 mb-2">Teks Bergerak (Marquee)</label>
+                <textarea id="mesej" rows="3" placeholder="Selamat datang ke..."></textarea>
+            </div>
+
+            <div>
+                <label for="memo" class="block text-sm font-medium text-slate-300 mb-2">Memo / Notis Tetap</label>
+                <textarea id="memo" rows="5" placeholder="Makluman penting..."></textarea>
+            </div>
+            
+            <div>
+                <label for="gambar" class="block text-sm font-medium text-slate-300 mb-2">URL Latar Belakang (Gambar)</label>
+                <input type="text" id="gambar" placeholder="https://example.com/image.jpg">
+            </div>
+
+            <button id="simpan" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">Simpan ke Paparan</button>
+            
+            <div class="text-center mt-4">
+                 <a href="index.html" class="text-sm text-cyan-400 hover:underline">&larr; Kembali ke Paparan Utama</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Konfigurasi Firebase untuk aplikasi web anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXzgZhN6ZVDfu_bhRW_Wf0rmEpC1QNi5Q",
+            authDomain: "jam-waktu-solat.firebaseapp.com",
+            databaseURL: "https://jam-waktu-solat-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "jam-waktu-solat",
+            storageBucket: "jam-waktu-solat.appspot.com",
+            messagingSenderId: "195350385788",
+            appId: "1:195350385788:web:90adc0ebfc1e27ec2725f9",
+            measurementId: "G-CK12K8WXGH"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const mesejEl = document.getElementById('mesej');
+        const memoEl = document.getElementById('memo');
+        const gambarEl = document.getElementById('gambar');
+        const simpanBtn = document.getElementById('simpan');
+
+        // Fungsi untuk memuatkan data sedia ada dari Firebase
+        const loadData = async () => {
+            try {
+                const snapshot = await get(ref(db, 'paparan/'));
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    mesejEl.value = data.mesej || '';
+                    memoEl.value = data.memo || '';
+                    gambarEl.value = data.gambar || '';
+                }
+            } catch (err) {
+                console.error("Ralat memuatkan data:", err);
+                alert("Gagal memuatkan data sedia ada.");
+            }
+        };
+
+        simpanBtn.addEventListener('click', () => {
+            const mesej = mesejEl.value;
+            const memo = memoEl.value;
+            const gambar = gambarEl.value;
+
+            set(ref(db, 'paparan/'), { mesej, memo, gambar })
+                .then(() => alert('Berjaya dikemaskini!'))
+                .catch(err => alert('Ralat: ' + err.message));
+        });
+        
+        // Muatkan data apabila halaman dibuka
+        loadData();
+    </script>
+</body>
+</html>
+
