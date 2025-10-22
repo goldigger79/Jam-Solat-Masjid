@@ -3,12 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#0a192f"/>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-
     <title>Jam Digital Waktu Solat Masjid</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,299 +27,315 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(23, 162, 184, 0.7);
         }
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            box-sizing: border-box;
-        }
-        .marquee-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 25s linear infinite;
-        }
-        @keyframes marquee {
-            0%   { transform: translate(0, 0); }
-            100% { transform: translate(-100%, 0); }
-        }
-        .image-gallery::-webkit-scrollbar { height: 8px; }
-        .image-gallery::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-        .image-gallery::-webkit-scrollbar-thumb { background: #17a2b8; border-radius: 10px; }
-        .image-gallery::-webkit-scrollbar-thumb:hover { background: #138496; }
-        .modal { transition: opacity 0.3s ease; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-4xl mx-auto space-y-6">
         <!-- HEADER -->
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-cyan-300 tracking-wide">Papan Kenyataan Masjid Digital</h1>
-            <p id="current-date" class="text-lg md:text-xl text-slate-300 mt-2">Memuatkan tarikh...</p>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-cyan-300 tracking-wide">Waktu Solat Digital</h1>
+            <div class="mt-4">
+                <label for="zone-select" class="sr-only">Pilih Zon</label>
+                <select id="zone-select" class="w-full max-w-md mx-auto bg-slate-700 text-white border border-slate-500 rounded-lg p-3 text-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none">
+                    <option value="JHR01">JHR01 - Pulau Aur dan Pulau Pemanggil</option>
+                    <option value="JHR02">JHR02 - Johor Bahru, Kota Tinggi, Kulai</option>
+                    <option value="JHR03">JHR03 - Kluang, Mersing</option>
+                    <option value="JHR04">JHR04 - Batu Pahat, Muar, Segamat, Gemas Johor</option>
+                    <option value="KDH01">KDH01 - Kota Setar, Kubang Pasu, Pokok Sena (Daerah Kecil)</option>
+                    <option value="KDH02">KDH02 - Kuala Muda, Yan, Pendang</option>
+                    <option value="KDH03">KDH03 - Padang Terap, Sik</option>
+                    <option value="KDH04">KDH04 - Baling</option>
+                    <option value="KDH05">KDH05 - Bandar Baharu, Kulim</option>
+                    <option value="KDH06">KDH06 - Langkawi</option>
+                    <option value="KDH07">KDH07 - Puncak Gunung Jerai</option>
+                    <option value="KTN01">KTN01 - Bachok, Kota Bharu, Machang, Pasir Mas, Pasir Puteh, Tanah Merah, Tumpat, Kuala Krai, Mukim Chiku</option>
+                    <option value="KTN03">KTN03 - Gua Musang (Daerah Galas Dan Bertam), Jeli</option>
+                    <option value="MLK01">MLK01 - MELAKA</option>
+                    <option value="NGS01">NGS01 - Tampin, Jempol</option>
+                    <option value="NGS02">NGS02 - Jelebu, Kuala Pilah, Port Dickson, Rembau, Seremban</option>
+                    <option value="PHG01">PHG01 - Pulau Tioman</option>
+                    <option value="PHG02">PHG02 - Kuantan, Pekan, Rompin, Muadzam Shah</option>
+                    <option value="PHG03">PHG03 - Jerantut, Temerloh, Maran, Bera, Chenor, Jengka</option>
+                    <option value="PHG04">PHG04 - Bentong, Lipis, Raub</option>
+                    <option value="PHG05">PHG05 - Genting Sempah, Janda Baik, Bukit Tinggi</option>
+                    <option value="PHG06">PHG06 - Cameron Highlands, Genting Highlands, Bukit Fraser</option>
+                    <option value="PLS01">PLS01 - Kangar, Padang Besar, Arau</option>
+                    <option value="PNG01">PNG01 - Seluruh Negeri Pulau Pinang</option>
+                    <option value="PRK01">PRK01 - Tapah, Slim River, Tanjung Malim</option>
+                    <option value="PRK02">PRK02 - Kuala Kangsar, Sg. Siput (U), Ipoh, Batu Gajah, Kampar</option>
+                    <option value="PRK03">PRK03 - Lenggong, Pengkalan Hulu, Grik</option>
+                    <option value="PRK04">PRK04 - Temengor, Belum</option>
+                    <option value="PRK05">PRK05 - Kg. Gajah, Teluk Intan, Bagan Datuk, Seri Iskandar, Beruas, Parit, Lumut, Sitiawan, Pulau Pangkor</option>
+                    <option value="PRK06">PRK06 - Selama, Taiping, Bagan Serai, Parit Buntar</option>
+                    <option value="PRK07">PRK07 - Bukit Larut</option>
+                    <option value="SBH01">SBH01 - Bahagian Sandakan (Timur), Bukit Garam, Semawang, Temanggong, Tambisan, Bandar Sandakan, Sukau</option>
+                    <option value="SBH02">SBH02 - Beluran, Telupid, Pinangah, Terusan, Kuamut, Bahagian Sandakan (Barat)</option>
+                    <option value="SBH03">SBH03 - Lahad Datu, Silabukan, Kunak, Sahabat, Semporna, Tungku, Bahagian Tawau (Timur)</option>
+                    <option value="SBH04">SBH04 - Bandar Tawau, Balong, Merotai, Kalabakan, Bahagian Tawau (Barat)</option>
+                    <option value="SBH05">SBH05 - Kudat, Kota Marudu, Pitas, Pulau Banggi, Bahagian Kudat</option>
+                    <option value="SBH06">SBH06 - Gunung Kinabalu</option>
+                    <option value="SBH07">SBH07 - Kota Kinabalu, Ranau, Kota Belud, Tuaran, Penampang, Papar, Putatan, Bahagian Pantai Barat</option>
+                    <option value="SBH08">SBH08 - Pensiangan, Keningau, Tambunan, Nabawan, Bahagian Pedalaman (Atas)</option>
+                    <option value="SBH09">SBH09 - Beaufort, Kuala Penyu, Sipitang, Tenom, Long Pa Sia, Membakut, Weston, Bahagian Pedalaman (Bawah)</option>
+                    <option value="SGR01" selected>SGR01 - Gombak, Petaling, Sepang, Hulu Langat, Hulu Selangor, S.Alam</option>
+                    <option value="SGR02">SGR02 - Kuala Selangor, Sabak Bernam</option>
+                    <option value="SGR03">SGR03 - Klang, Kuala Langat</option>
+                    <option value="SWK01">SWK01 - Limbang, Lawas, Sundar, Trusan</option>
+                    <option value="SWK02">SWK02 - Miri, Niah, Bekenu, Sibuti, Marudi</option>
+                    <option value="SWK03">SWK03 - Pandan, Belaga, Suai, Tatau, Sebauh, Bintulu</option>
+                    <option value="SWK04">SWK04 - Sibu, Mukah, Dalat, Song, Igan, Oya, Balingian, Kanowit, Kapit</option>
+                    <option value="SWK05">SWK05 - Sarikei, Matu, Julau, Rajang, Daro, Bintangor, Belawai</option>
+                    <option value="SWK06">SWK06 - Lubok Antu, Sri Aman, Roban, Debak, Kabong, Lingga, Engkelili, Betong, Pusa, Saratok</option>
+                    <option value="SWK07">SWK07 - Serian, Simunjan, Samarahan, Sebuyau, Meludam</option>
+                    <option value="SWK08">SWK08 - Kuching, Bau, Lundu, Sematan</option>
+                    <option value="SWK09">SWK09 - Zon Khas (Kampung Patarikan)</option>
+                    <option value="TRG01">TRG01 - Kuala Terengganu, Marang, Kuala Nerus</option>
+                    <option value="TRG02">TRG02 - Besut, Setiu</option>
+                    <option value="TRG03">TRG03 - Hulu Terengganu</option>
+                    <option value="TRG04">TRG04 - Dungun, Kemaman</option>
+                    <option value="WLY01">WLY01 - Kuala Lumpur, Putrajaya</option>
+                    <option value="WLY02">WLY02 - Labuan</option>
+                </select>
+            </div>
         </header>
 
-        <!-- MAIN GRID -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- LEFT COLUMN: CLOCK & PRAYER TIMES -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Clock and Location Panel -->
-                <div class="glass-panel p-6 text-center">
-                    <h2 id="current-time" class="text-6xl md:text-8xl font-black tracking-tighter">--:--:--</h2>
-                    <div class="mt-4">
-                        <label for="zone-select" class="sr-only">Pilih Zon</label>
-                        <select id="zone-select" class="w-full max-w-md mx-auto bg-slate-700 text-white border border-slate-500 rounded-lg p-3 text-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none">
-                            <option>Memuatkan senarai zon...</option>
-                        </select>
-                    </div>
-                </div>
+        <!-- Jam & Tarikh Semasa -->
+        <div class="glass-panel p-6 text-center">
+            <h2 id="current-time" class="text-6xl md:text-8xl font-black tracking-tighter">--:--:--</h2>
+            <p id="current-date" class="text-lg md:text-xl text-slate-300 mt-2">Memuatkan...</p>
+        </div>
 
-                <!-- Prayer Times Panel -->
-                <div class="glass-panel p-6">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
-                        <div id="prayer-Subuh" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
-                            <h3 class="text-sm font-semibold text-slate-400">SUBUH</h3>
-                            <p class="text-2xl font-bold time-display">--:--</p>
-                        </div>
-                        <div id="prayer-Syuruk" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
-                            <h3 class="text-sm font-semibold text-slate-400">SYURUK</h3>
-                            <p class="text-2xl font-bold time-display">--:--</p>
-                        </div>
-                        <div id="prayer-Zohor" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
-                            <h3 class="text-sm font-semibold text-slate-400">ZOHOR</h3>
-                            <p class="text-2xl font-bold time-display">--:--</p>
-                        </div>
-                        <div id="prayer-Asar" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
-                            <h3 class="text-sm font-semibold text-slate-400">ASAR</h3>
-                            <p class="text-2xl font-bold time-display">--:--</p>
-                        </div>
-                        <div id="prayer-Maghrib" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
-                            <h3 class="text-sm font-semibold text-slate-400">MAGHRIB</h3>
-                            <p class="text-2xl font-bold time-display">--:--</p>
-                        </div>
-                        <div id="prayer-Isyak" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
-                            <h3 class="text-sm font-semibold text-slate-400">ISYAK</h3>
-                            <p class="text-2xl font-bold time-display">--:--</p>
-                        </div>
-                    </div>
+        <!-- Prayer Times Panel -->
+        <div class="glass-panel p-6">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                <div id="subuh" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-slate-400">SUBUH</h3>
+                    <p class="text-2xl font-bold time-display">--:--</p>
                 </div>
-
-                <!-- Countdown & Iqomah Timer Panel -->
-                <div class="glass-panel p-6 text-center">
-                    <h3 class="text-lg font-semibold text-cyan-300">MASA BERBAKI UNTUK <span id="next-prayer-name">...</span></h3>
-                    <p id="countdown-timer" class="text-5xl font-bold mt-2">--:--:--</p>
-                    <div id="iqomah-timer-display" class="hidden mt-4">
-                        <h3 class="text-lg font-semibold text-amber-300">IQOMAH DALAM</h3>
-                        <p id="iqomah-countdown" class="text-5xl font-bold mt-2">--:--</p>
-                    </div>
+                <div id="syuruk" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-slate-400">SYURUK</h3>
+                    <p class="text-2xl font-bold time-display">--:--</p>
                 </div>
-            </div>
-
-            <!-- RIGHT COLUMN: INFO & SETTINGS -->
-            <div class="space-y-6">
-                <!-- Memo Panel -->
-                <div class="glass-panel p-6 space-y-3">
-                    <h3 class="font-bold text-lg text-cyan-300">Memo Bergerak</h3>
-                    <div class="marquee-container bg-slate-800 p-3 rounded-lg">
-                        <p id="marquee-text-display" class="marquee-text">Selamat datang ke Papan Kenyataan Masjid Digital. Sila masukkan memo anda di bawah.</p>
-                    </div>
-                    <input type="text" id="memo-input" placeholder="Taip memo di sini..." class="w-full bg-slate-700 border border-slate-500 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400 focus:outline-none">
-                    <button id="save-memo-btn" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Simpan Memo</button>
+                <div id="zohor" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-slate-400">ZOHOR</h3>
+                    <p class="text-2xl font-bold time-display">--:--</p>
                 </div>
-
-                <!-- Notice Panel -->
-                <div class="glass-panel p-6 space-y-3">
-                    <h3 class="font-bold text-lg text-cyan-300">Notis / Pengumuman</h3>
-                    <textarea id="notice-input" rows="5" placeholder="Taip notis atau pengumuman di sini..." class="w-full bg-slate-700 border border-slate-500 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400 focus:outline-none"></textarea>
-                    <button id="save-notice-btn" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Simpan Notis</button>
+                <div id="asar" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-slate-400">ASAR</h3>
+                    <p class="text-2xl font-bold time-display">--:--</p>
                 </div>
-
-                <!-- Image Gallery Panel -->
-                <div class="glass-panel p-6 space-y-3">
-                    <h3 class="font-bold text-lg text-cyan-300">Galeri Aktiviti</h3>
-                    <div id="image-gallery" class="image-gallery flex space-x-4 overflow-x-auto p-2 bg-slate-800 rounded-lg min-h-[120px] items-center justify-start">
-                        <p id="gallery-placeholder" class="text-slate-400 text-sm px-4">Tiada gambar. Sila pilih gambar aktiviti.</p>
-                    </div>
-                    <input type="file" id="image-upload-input" multiple accept="image/*" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-600 file:text-white hover:file:bg-cyan-700">
+                <div id="maghrib" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-slate-400">MAGHRIB</h3>
+                    <p class="text-2xl font-bold time-display">--:--</p>
                 </div>
-                
-                <!-- Settings Panel -->
-                <div class="glass-panel p-6 space-y-3">
-                    <h3 class="font-bold text-lg text-cyan-300">Tetapan</h3>
-                    <label for="iqomah-duration-input" class="block text-sm">Tempoh Tunggu Iqomah (minit)</label>
-                    <input type="number" id="iqomah-duration-input" value="10" min="1" class="w-full bg-slate-700 border border-slate-500 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400 focus:outline-none">
+                <div id="isyak" class="p-4 bg-slate-800 rounded-lg transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-slate-400">ISYAK</h3>
+                    <p class="text-2xl font-bold time-display">--:--</p>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- MODAL POPUP -->
-    <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
-        <div class="glass-panel text-center p-8 rounded-2xl max-w-sm w-full transform scale-95 transition-transform duration-300">
-            <h2 id="modal-title" class="text-4xl font-bold text-cyan-300"></h2>
-            <p id="modal-message" class="mt-4 text-lg"></p>
-            <button id="modal-close-btn" class="mt-8 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-8 rounded-lg transition-colors">Tutup</button>
+        
+        <!-- Countdown & Next Prayer -->
+        <div class="glass-panel p-6 text-center">
+            <h3 class="text-lg font-semibold text-cyan-300">MASA BERBAKI KE <span id="next-prayer">...</span></h3>
+            <p id="countdown" class="text-5xl font-bold mt-2">--:--:--</p>
         </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- DOM ELEMENTS (same as before) ---
-        const currentTimeEl = document.getElementById('current-time');
-        const currentDateEl = document.getElementById('current-date');
-        const zoneSelectEl = document.getElementById('zone-select');
-        const prayerTimeDisplays = document.querySelectorAll('.time-display');
-        const prayerTimeDivs = {
-            Subuh: document.getElementById('prayer-Subuh'),
-            Syuruk: document.getElementById('prayer-Syuruk'),
-            Zohor: document.getElementById('prayer-Zohor'),
-            Asar: document.getElementById('prayer-Asar'),
-            Maghrib: document.getElementById('prayer-Maghrib'),
-            Isyak: document.getElementById('prayer-Isyak'),
-        };
-        const nextPrayerNameEl = document.getElementById('next-prayer-name');
-        const countdownTimerEl = document.getElementById('countdown-timer');
-        const iqomahTimerDisplayEl = document.getElementById('iqomah-timer-display');
-        const iqomahCountdownEl = document.getElementById('iqomah-countdown');
-        const memoInputEl = document.getElementById('memo-input');
-        const saveMemoBtn = document.getElementById('save-memo-btn');
-        const marqueeTextDisplayEl = document.getElementById('marquee-text-display');
-        const noticeInputEl = document.getElementById('notice-input');
-        const saveNoticeBtn = document.getElementById('save-notice-btn');
-        const imageUploadInput = document.getElementById('image-upload-input');
-        const imageGalleryEl = document.getElementById('image-gallery');
-        const galleryPlaceholder = document.getElementById('gallery-placeholder');
-        const iqomahDurationInput = document.getElementById('iqomah-duration-input');
-        const modalEl = document.getElementById('modal');
-        const modalTitleEl = document.getElementById('modal-title');
-        const modalMessageEl = document.getElementById('modal-message');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
+    /* --------------------------------------------------
+       SCRIPT - Waktu Solat Malaysia (Zon)
+       Versi stabil & robust untuk web app anda
+    -------------------------------------------------- */
+    
+    let prayerTimesData = {};
+    let nextPrayerInfo = null;
+    
+    // Dapatkan elemen paparan masa dan zon
+    const prayerTimeDisplays = document.querySelectorAll('.time-display');
+    const zoneSelect = document.getElementById('zone-select');
+    const countdownDisplay = document.getElementById('countdown');
+    const nextPrayerDisplay = document.getElementById('next-prayer');
+    const currentTimeEl = document.getElementById('current-time');
+    const currentDateEl = document.getElementById('current-date');
 
-        // --- STATE VARIABLES (same as before) ---
-        let prayerTimesData = {};
-        let nextPrayerInfo = null;
-        let iqomahCountdownInterval = null;
-        let mainInterval = null;
-        let audioContext;
+    const prayerTimeDivs = {
+        Subuh: document.getElementById('subuh'),
+        Syuruk: document.getElementById('syuruk'),
+        Zohor: document.getElementById('zohor'),
+        Asar: document.getElementById('asar'),
+        Maghrib: document.getElementById('maghrib'),
+        Isyak: document.getElementById('isyak'),
+    };
+    
+    const fetchPrayerTimes = async (zone) => {
+        // Menggunakan API rasmi e-solat JAKIM
+        const apiUrl = `https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat&period=today&zone=${zone}`;
 
-        // --- PRAYER ZONES (same as before) ---
-        const PRAYER_ZONES = [
-            { code: "JHR01", name: "JHR01 - Pulau Aur dan Pulau Pemanggil" }, { code: "JHR02", name: "JHR02 - Johor Bahru, Kota Tinggi, Kulai" }, { code: "JHR03", name: "JHR03 - Kluang, Mersing" }, { code: "JHR04", name: "JHR04 - Batu Pahat, Muar, Segamat, Gemas Johor" }, { code: "KDH01", name: "KDH01 - Kota Setar, Kubang Pasu, Pokok Sena (Daerah Kecil)" }, { code: "KDH02", name: "KDH02 - Kuala Muda, Yan, Pendang" }, { code: "KDH03", name: "KDH03 - Padang Terap, Sik" }, { code: "KDH04", name: "KDH04 - Baling" }, { code: "KDH05", name: "KDH05 - Bandar Baharu, Kulim" }, { code: "KDH06", name: "KDH06 - Langkawi" }, { code: "KDH07", name: "KDH07 - Puncak Gunung Jerai" }, { code: "KTN01", name: "KTN01 - Bachok, Kota Bharu, Machang, Pasir Mas, Pasir Puteh, Tanah Merah, Tumpat, Kuala Krai, Mukim Chiku" }, { code: "KTN03", name: "KTN03 - Gua Musang (Daerah Galas Dan Bertam), Jeli" }, { code: "MLK01", name: "MLK01 - MELAKA" }, { code: "NGS01", name: "NGS01 - Tampin, Jempol" }, { code: "NGS02", name: "NGS02 - Jelebu, Kuala Pilah, Port Dickson, Rembau, Seremban" }, { code: "PHG01", name: "PHG01 - Pulau Tioman" }, { code: "PHG02", name: "PHG02 - Kuantan, Pekan, Rompin, Muadzam Shah" }, { code: "PHG03", name: "PHG03 - Jerantut, Temerloh, Maran, Bera, Chenor, Jengka" }, { code: "PHG04", name: "PHG04 - Bentong, Lipis, Raub" }, { code: "PHG05", name: "PHG05 - Genting Sempah, Janda Baik, Bukit Tinggi" }, { code: "PHG06", name: "PHG06 - Cameron Highlands, Genting Highlands, Bukit Fraser" }, { code: "PLS01", name: "PLS01 - Kangar, Padang Besar, Arau" }, { code: "PNG01", name: "PNG01 - Seluruh Negeri Pulau Pinang" }, { code: "PRK01", name: "PRK01 - Tapah, Slim River, Tanjung Malim" }, { code: "PRK02", name: "PRK02 - Kuala Kangsar, Sg. Siput (U), Ipoh, Batu Gajah, Kampar" }, { code: "PRK03", name: "PRK03 - Lenggong, Pengkalan Hulu, Grik" }, { code: "PRK04", name: "PRK04 - Temengor, Belum" }, { code: "PRK05", name: "PRK05 - Kg. Gajah, Teluk Intan, Bagan Datuk, Seri Iskandar, Beruas, Parit, Lumut, Sitiawan, Pulau Pangkor" }, { code: "PRK06", name: "PRK06 - Selama, Taiping, Bagan Serai, Parit Buntar" }, { code: "PRK07", name: "PRK07 - Bukit Larut" }, { code: "SBH01", name: "SBH01 - Bahagian Sandakan (Timur), Bukit Garam, Semawang, Temanggong, Tambisan, Bandar Sandakan, Sukau" }, { code: "SBH02", name: "SBH02 - Beluran, Telupid, Pinangah, Terusan, Kuamut, Bahagian Sandakan (Barat)" }, { code: "SBH03", name: "SBH03 - Lahad Datu, Silabukan, Kunak, Sahabat, Semporna, Tungku, Bahagian Tawau (Timur)" }, { code: "SBH04", name: "SBH04 - Bandar Tawau, Balong, Merotai, Kalabakan, Bahagian Tawau (Barat)" }, { code: "SBH05", name: "SBH05 - Kudat, Kota Marudu, Pitas, Pulau Banggi, Bahagian Kudat" }, { code: "SBH06", name: "SBH06 - Gunung Kinabalu" }, { code: "SBH07", name: "SBH07 - Kota Kinabalu, Ranau, Kota Belud, Tuaran, Penampang, Papar, Putatan, Bahagian Pantai Barat" }, { code: "SBH08", name: "SBH08 - Pensiangan, Keningau, Tambunan, Nabawan, Bahagian Pedalaman (Atas)" }, { code: "SBH09", name: "SBH09 - Beaufort, Kuala Penyu, Sipitang, Tenom, Long Pa Sia, Membakut, Weston, Bahagian Pedalaman (Bawah)" }, { code: "SGR01", name: "SGR01 - Gombak, Petaling, Sepang, Hulu Langat, Hulu Selangor, S.Alam" }, { code: "SGR02", name: "SGR02 - Kuala Selangor, Sabak Bernam" }, { code: "SGR03", name: "SGR03 - Klang, Kuala Langat" }, { code: "SWK01", name: "SWK01 - Limbang, Lawas, Sundar, Trusan" }, { code: "SWK02", name: "SWK02 - Miri, Niah, Bekenu, Sibuti, Marudi" }, { code: "SWK03", name: "SWK03 - Pandan, Belaga, Suai, Tatau, Sebauh, Bintulu" }, { code: "SWK04", name: "SWK04 - Sibu, Mukah, Dalat, Song, Igan, Oya, Balingian, Kanowit, Kapit" }, { code: "SWK05", name: "SWK05 - Sarikei, Matu, Julau, Rajang, Daro, Bintangor, Belawai" }, { code: "SWK06", name: "SWK06 - Lubok Antu, Sri Aman, Roban, Debak, Kabong, Lingga, Engkelili, Betong, Pusa, Saratok" }, { code: "SWK07", name: "SWK07 - Serian, Simunjan, Samarahan, Sebuyau, Meludam" }, { code: "SWK08", name: "SWK08 - Kuching, Bau, Lundu, Sematan" }, { code: "SWK09", name: "SWK09 - Zon Khas (Kampung Patarikan)" }, { code: "TRG01", name: "TRG01 - Kuala Terengganu, Marang, Kuala Nerus" }, { code: "TRG02", name: "TRG02 - Besut, Setiu" }, { code: "TRG03", name: "TRG03 - Hulu Terengganu" }, { code: "TRG04", name: "TRG04 - Dungun, Kemaman" }, { code: "WLY01", name: "WLY01 - Kuala Lumpur, Putrajaya" }, { code: "WLY02", name: "WLY02 - Labuan" }
-        ];
-
-        // --- FUNCTIONS ---
-        const initAudio = () => { try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { console.warn('Web Audio API is not supported.'); } };
-        const playSound = () => { if (!audioContext) return; const oscillator = audioContext.createOscillator(); const gainNode = audioContext.createGain(); oscillator.connect(gainNode); gainNode.connect(audioContext.destination); oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(880, audioContext.currentTime); gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 1); oscillator.start(); oscillator.stop(audioContext.currentTime + 1); };
-        const showModal = (title, message) => { modalTitleEl.textContent = title; modalMessageEl.textContent = message; modalEl.classList.remove('opacity-0', 'pointer-events-none'); modalEl.querySelector('.transform').classList.remove('scale-95'); playSound(); };
-        const hideModal = () => { modalEl.classList.add('opacity-0', 'pointer-events-none'); modalEl.querySelector('.transform').classList.add('scale-95'); };
-        const loadSettings = () => { const savedZone = localStorage.getItem('prayerZone') || 'WLY01'; const savedMemo = localStorage.getItem('memoText') || 'Selamat datang.'; const savedNotice = localStorage.getItem('noticeText') || ''; const savedIqomahDuration = localStorage.getItem('iqomahDuration') || '10'; zoneSelectEl.value = savedZone; memoInputEl.value = savedMemo; marqueeTextDisplayEl.textContent = savedMemo; noticeInputEl.value = savedNotice; iqomahDurationInput.value = savedIqomahDuration; };
-        const saveSetting = (key, value) => localStorage.setItem(key, value);
-        const populateZones = () => { zoneSelectEl.innerHTML = ''; PRAYER_ZONES.forEach(zone => { const option = document.createElement('option'); option.value = zone.code; option.textContent = zone.name; zoneSelectEl.appendChild(option); }); };
-        
-        // FIXED: Using a new, more reliable and direct API endpoint. No proxy needed.
-        const fetchPrayerTimes = async (zone) => {
-            try {
-                const apiUrl = `https://waktu-solat-api.vercel.app/api/v2/waktu-solat/${zone}.json`;
-
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok. Status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Add more robust data validation for the new API structure
-                if (!data || !data.prayerTime || !data.prayerTime.length) {
-                    throw new Error('Invalid or empty data received from API.');
-                }
-                
-                const todayPrayer = data.prayerTime[0];
-                prayerTimesData = {
-                    Subuh: todayPrayer.fajr,
-                    Syuruk: todayPrayer.syuruk,
-                    Zohor: todayPrayer.dhuhr,
-                    Asar: todayPrayer.asr,
-                    Maghrib: todayPrayer.maghrib,
-                    Isyak: todayPrayer.isha
-                };
-                updatePrayerTimeUI();
-            } catch (error) {
-                console.error('Failed to fetch prayer times:', error);
-                Object.values(prayerTimeDisplays).forEach(el => el.textContent = 'Ralat');
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`Ralat capaian API (status ${response.status})`);
             }
-        };
-        
-        const updatePrayerTimeUI = () => {
-            for (const prayer in prayerTimesData) {
-                const time = prayerTimesData[prayer];
-                prayerTimeDivs[prayer].querySelector('.time-display').textContent = time;
+            const data = await response.json();
+
+            // Semak jika data prayerTime wujud dan tidak kosong
+            if (!data.prayerTime || data.prayerTime.length === 0) {
+                throw new Error('Struktur data API tidak sah atau kosong.');
             }
+
+            const todayPrayer = data.prayerTime[0];
+
+            // Fungsi untuk format masa ke HH:MM
+            const formatTime = (timeStr) => {
+                if (!timeStr) return '--:--';
+                const date = new Date(`1970-01-01T${timeStr}`);
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`;
+            };
+            
+            prayerTimesData = {
+                Subuh: formatTime(todayPrayer.fajr),
+                Syuruk: formatTime(todayPrayer.syuruk),
+                Zohor: formatTime(todayPrayer.dhuhr),
+                Asar: formatTime(todayPrayer.asr),
+                Maghrib: formatTime(todayPrayer.maghrib),
+                Isyak: formatTime(todayPrayer.isha)
+            };
+
+            updatePrayerTimeUI();
+            findNextPrayer(new Date());
+
+        } catch (err) {
+            console.error("Ralat ambil data:", err);
+            nextPrayerDisplay.textContent = `Ralat: ${err.message}`;
+            prayerTimeDisplays.forEach(el => el.textContent = 'Ralat');
+        }
+    };
+    
+    // Kemas kini paparan waktu solat
+    const updatePrayerTimeUI = () => {
+        for (const prayer in prayerTimesData) {
+            const div = prayerTimeDivs[prayer];
+            if (!div) continue;
+            const timeEl = div.querySelector('.time-display');
+            if (timeEl) timeEl.textContent = prayerTimesData[prayer];
+        }
+    };
+    
+    // Cari solat seterusnya
+    const findNextPrayer = (now) => {
+        const buildDateFromHM = (dateObj, hm) => {
+            if (!hm || hm === '--:--') return null;
+            const [hours, minutes] = hm.split(':');
+            const d = new Date(dateObj);
+            d.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+            return d;
         };
-
-        const updateLoop = () => { const now = new Date(); currentTimeEl.textContent = now.toLocaleTimeString('ms-MY', { hour12: false }); currentDateEl.textContent = now.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); findNextPrayer(now); if (nextPrayerInfo) { const diff = nextPrayerInfo.time - now; if (diff > 0) { const hours = Math.floor(diff / 3600000); const minutes = Math.floor((diff % 3600000) / 60000); const seconds = Math.floor((diff % 60000) / 1000); countdownTimerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; } if (Math.floor(diff / 1000) === 0) { triggerAzan(nextPrayerInfo.name); } } else { countdownTimerEl.textContent = "--:--:--"; nextPrayerNameEl.textContent = "SUBUH ESOK"; } };
-        
-        const findNextPrayer = (now) => {
-            const todayStr = now.toISOString().split('T')[0];
-            let nextPrayer = null;
-            const prayerOrder = ['Subuh', 'Zohor', 'Asar', 'Maghrib', 'Isyak'];
-            for (const prayerName of prayerOrder) {
-                if (prayerTimesData[prayerName]) {
-                    const prayerTimeStr = prayerTimesData[prayerName];
-                    const prayerDateTime = new Date(`${todayStr}T${prayerTimeStr}:00`);
-                    if (prayerDateTime > now) {
-                        nextPrayer = { name: prayerName, time: prayerDateTime };
-                        break;
-                    }
-                }
+    
+        const order = ['Subuh', 'Zohor', 'Asar', 'Maghrib', 'Isyak'];
+        let nextPrayer = null;
+    
+        for (const name of order) {
+            const hm = prayerTimesData[name];
+            const time = buildDateFromHM(now, hm);
+            if (time && time > now) {
+                nextPrayer = { name, time };
+                break;
             }
-            if (!nextPrayer && prayerTimesData.Subuh) {
-                const tomorrow = new Date(now);
-                tomorrow.setDate(now.getDate() + 1);
-                const tomorrowStr = tomorrow.toISOString().split('T')[0];
-                const subuhTimeStr = prayerTimesData.Subuh;
-                nextPrayer = { name: 'Subuh', time: new Date(`${tomorrowStr}T${subuhTimeStr}:00`) };
+        }
+    
+        // Jika tiada lagi hari ini → ambil Subuh esok
+        if (!nextPrayer && prayerTimesData.Subuh) {
+            const tomorrow = new Date(now);
+            tomorrow.setDate(now.getDate() + 1);
+            const subuhTime = buildDateFromHM(tomorrow, prayerTimesData.Subuh);
+            if (subuhTime) nextPrayer = { name: 'Subuh', time: subuhTime };
+        }
+    
+        nextPrayerInfo = nextPrayer;
+        updateNextPrayerUI();
+    };
+    
+    // Paparkan solat seterusnya
+    const updateNextPrayerUI = () => {
+        // Kemas kini penanda solat seterusnya
+        Object.values(prayerTimeDivs).forEach(div => div.classList.remove('next-prayer'));
+        if (nextPrayerInfo && prayerTimeDivs[nextPrayerInfo.name]) {
+            prayerTimeDivs[nextPrayerInfo.name].classList.add('next-prayer');
+        }
+
+        if (!nextPrayerInfo) {
+            nextPrayerDisplay.textContent = "Tiada maklumat";
+            countdownDisplay.textContent = "--:--:--";
+            return;
+        }
+        nextPrayerDisplay.textContent = `${nextPrayerInfo.name.toUpperCase()} (${nextPrayerInfo.time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})})`;
+    };
+    
+    // Kira undur masa ke solat seterusnya
+    const updateCountdown = () => {
+        if (!nextPrayerInfo) return;
+    
+        const now = new Date();
+        const diff = nextPrayerInfo.time - now;
+        if (diff <= 0) {
+            // Masa solat telah tiba, muat semula data untuk hari seterusnya jika perlu
+            setTimeout(() => fetchPrayerTimes(zoneSelect.value), 2000); // Tunggu 2 saat sebelum muat semula
+            countdownDisplay.textContent = "00:00:00";
+            return;
+        }
+    
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+    
+        countdownDisplay.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    };
+
+    // Fungsi untuk kemas kini jam utama
+    const updateClock = () => {
+        const now = new Date();
+        currentTimeEl.textContent = now.toLocaleTimeString('ms-MY', { hour12: false });
+        currentDateEl.textContent = now.toLocaleDateString('ms-MY', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    };
+    
+    // Penukaran zon
+    zoneSelect.addEventListener('change', () => {
+        const zone = zoneSelect.value;
+        if (zone) {
+            fetchPrayerTimes(zone);
+        }
+    });
+    
+    // Inisialisasi awal
+    window.addEventListener('DOMContentLoaded', () => {
+        const zone = zoneSelect.value || 'SGR01';
+        fetchPrayerTimes(zone);
+        updateClock(); // Panggil sekali untuk elak kelengahan paparan awal
+
+        setInterval(() => {
+            updateClock();
+            updateCountdown();
+        }, 1000);
+
+        // Tambah semakan setiap minit untuk pastikan data sentiasa segar jika dibiarkan lama
+        setInterval(() => {
+            const now = new Date();
+            // Panggil semula fetchPrayerTimes jika sudah melepasi tengah malam
+            if (now.getHours() === 0 && now.getMinutes() === 1) {
+                fetchPrayerTimes(zoneSelect.value);
             }
-            nextPrayerInfo = nextPrayer;
-            updateNextPrayerUI();
-        };
-
-        const updateNextPrayerUI = () => { Object.values(prayerTimeDivs).forEach(div => div.classList.remove('next-prayer')); if (nextPrayerInfo) { nextPrayerNameEl.textContent = nextPrayerInfo.name.toUpperCase(); if (prayerTimeDivs[nextPrayerInfo.name]) { prayerTimeDivs[nextPrayerInfo.name].classList.add('next-prayer'); } } };
-        const triggerAzan = (prayerName) => { showModal(`Telah Masuk Waktu ${prayerName}`, `Selamat menunaikan solat fardhu ${prayerName}.`); startIqomahTimer(); };
-        const startIqomahTimer = () => { if (iqomahCountdownInterval) clearInterval(iqomahCountdownInterval); iqomahTimerDisplayEl.classList.remove('hidden'); let duration = parseInt(iqomahDurationInput.value, 10) * 60; iqomahCountdownInterval = setInterval(() => { if (duration <= 0) { clearInterval(iqomahCountdownInterval); iqomahTimerDisplayEl.classList.add('hidden'); showModal('Waktu Iqomah', 'Solat akan didirikan.'); return; } duration--; const minutes = Math.floor(duration / 60); const seconds = duration % 60; iqomahCountdownEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; }, 1000); };
-        
-        // --- EVENT LISTENERS (same as before) ---
-        zoneSelectEl.addEventListener('change', (e) => { saveSetting('prayerZone', e.target.value); fetchPrayerTimes(e.target.value); });
-        saveMemoBtn.addEventListener('click', () => { const memo = memoInputEl.value; saveSetting('memoText', memo); marqueeTextDisplayEl.textContent = memo; alert('Memo berjaya disimpan!'); });
-        saveNoticeBtn.addEventListener('click', () => { saveSetting('noticeText', noticeInputEl.value); alert('Notis berjaya disimpan!'); });
-        iqomahDurationInput.addEventListener('change', () => { saveSetting('iqomahDuration', iqomahDurationInput.value); });
-        imageUploadInput.addEventListener('change', (e) => { imageGalleryEl.innerHTML = ''; if (e.target.files.length > 0) { galleryPlaceholder.classList.add('hidden'); Array.from(e.target.files).forEach(file => { const img = document.createElement('img'); img.src = URL.createObjectURL(file); img.className = 'h-28 w-auto object-cover rounded-lg shadow-md'; img.onload = () => URL.revokeObjectURL(img.src); imageGalleryEl.appendChild(img); }); } else { galleryPlaceholder.classList.remove('hidden'); } });
-        modalCloseBtn.addEventListener('click', hideModal);
-
-        // --- INITIALIZATION ---
-        const init = async () => {
-            initAudio();
-            populateZones();
-            loadSettings();
-            await fetchPrayerTimes(zoneSelectEl.value);
-            mainInterval = setInterval(updateLoop, 1000);
-            updateLoop();
-
-            // PWA Service Worker Registration
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/service-worker.js')
-                        .then(registration => {
-                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                        })
-                        .catch(err => {
-                            console.log('ServiceWorker registration failed: ', err);
-                        });
-                });
-            }
-        };
-
-        init();
+        }, 60000);
     });
     </script>
 </body>
 </html>
+
