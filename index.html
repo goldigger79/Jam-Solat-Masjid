@@ -42,6 +42,10 @@
             padding-left: 100%;
             animation: marquee 30s linear infinite;
         }
+        /* Cadangan F: Jeda animasi marquee apabila tetikus berada di atasnya */
+        .marquee-container:hover .marquee-text {
+            animation-play-state: paused;
+        }
         @keyframes marquee {
             0%   { transform: translate(0, 0); }
             100% { transform: translate(-100%, 0); }
@@ -56,66 +60,105 @@
             <h1 class="text-4xl md:text-6xl font-extrabold text-cyan-300 tracking-wide">Jam Waktu Solat Digital</h1>
             <div class="mt-4">
                 <label for="zone-select" class="sr-only">Pilih Zon</label>
+                <!-- Cadangan A: Menggunakan <optgroup> untuk mengumpulkan zon mengikut negeri -->
                 <select id="zone-select" class="w-full max-w-md mx-auto bg-slate-700 text-white border border-slate-500 rounded-lg p-3 text-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none">
-                    <option value="JHR01">JHR01 - Pulau Aur dan Pulau Pemanggil</option>
-                    <option value="JHR02">JHR02 - Johor Bahru, Kota Tinggi, Kulai</option>
-                    <option value="JHR03">JHR03 - Kluang, Mersing</option>
-                    <option value="JHR04">JHR04 - Batu Pahat, Muar, Segamat, Gemas Johor</option>
-                    <option value="KDH01">KDH01 - Kota Setar, Kubang Pasu, Pokok Sena (Daerah Kecil)</option>
-                    <option value="KDH02">KDH02 - Kuala Muda, Yan, Pendang</option>
-                    <option value="KDH03">KDH03 - Padang Terap, Sik</option>
-                    <option value="KDH04">KDH04 - Baling</option>
-                    <option value="KDH05">KDH05 - Bandar Baharu, Kulim</option>
-                    <option value="KDH06">KDH06 - Langkawi</option>
-                    <option value="KDH07">KDH07 - Puncak Gunung Jerai</option>
-                    <option value="KTN01">KTN01 - Bachok, Kota Bharu, Machang, Pasir Mas, Pasir Puteh, Tanah Merah, Tumpat, Kuala Krai, Mukim Chiku</option>
-                    <option value="KTN03">KTN03 - Gua Musang (Daerah Galas Dan Bertam), Jeli</option>
-                    <option value="MLK01">MLK01 - MELAKA</option>
-                    <option value="NGS01">NGS01 - Tampin, Jempol</option>
-                    <option value="NGS02">NGS02 - Jelebu, Kuala Pilah, Port Dickson, Rembau, Seremban</option>
-                    <option value="PHG01">PHG01 - Pulau Tioman</option>
-                    <option value="PHG02">PHG02 - Kuantan, Pekan, Rompin, Muadzam Shah</option>
-                    <option value="PHG03">PHG03 - Jerantut, Temerloh, Maran, Bera, Chenor, Jengka</option>
-                    <option value="PHG04">PHG04 - Bentong, Lipis, Raub</option>
-                    <option value="PHG05">PHG05 - Genting Sempah, Janda Baik, Bukit Tinggi</option>
-                    <option value="PHG06">PHG06 - Cameron Highlands, Genting Highlands, Bukit Fraser</option>
-                    <option value="PLS01">PLS01 - Kangar, Padang Besar, Arau</option>
-                    <option value="PNG01">PNG01 - Seluruh Negeri Pulau Pinang</option>
-                    <option value="PRK01">PRK01 - Tapah, Slim River, Tanjung Malim</option>
-                    <option value="PRK02">PRK02 - Kuala Kangsar, Sg. Siput (U), Ipoh, Batu Gajah, Kampar</option>
-                    <option value="PRK03">PRK03 - Lenggong, Pengkalan Hulu, Grik</option>
-                    <option value="PRK04">PRK04 - Temengor, Belum</option>
-                    <option value="PRK05">PRK05 - Kg. Gajah, Teluk Intan, Bagan Datuk, Seri Iskandar, Beruas, Parit, Lumut, Sitiawan, Pulau Pangkor</option>
-                    <option value="PRK06">PRK06 - Selama, Taiping, Bagan Serai, Parit Buntar</option>
-                    <option value="PRK07">PRK07 - Bukit Larut</option>
-                    <option value="SBH01">SBH01 - Bahagian Sandakan (Timur), Bukit Garam, Semawang, Temanggong, Tambisan, Bandar Sandakan, Sukau</option>
-                    <option value="SBH02">SBH02 - Beluran, Telupid, Pinangah, Terusan, Kuamut, Bahagian Sandakan (Barat)</option>
-                    <option value="SBH03">SBH03 - Lahad Datu, Silabukan, Kunak, Sahabat, Semporna, Tungku, Bahagian Tawau (Timur)</option>
-                    <option value="SBH04">SBH04 - Bandar Tawau, Balong, Merotai, Kalabakan, Bahagian Tawau (Barat)</option>
-                    <option value="SBH05">SBH05 - Kudat, Kota Marudu, Pitas, Pulau Banggi, Bahagian Kudat</option>
-                    <option value="SBH06">SBH06 - Gunung Kinabalu</option>
-                    <option value="SBH07">SBH07 - Kota Kinabalu, Ranau, Kota Belud, Tuaran, Penampang, Papar, Putatan, Bahagian Pantai Barat</option>
-                    <option value="SBH08">SBH08 - Pensiangan, Keningau, Tambunan, Nabawan, Bahagian Pedalaman (Atas)</option>
-                    <option value="SBH09">SBH09 - Beaufort, Kuala Penyu, Sipitang, Tenom, Long Pa Sia, Membakut, Weston, Bahagian Pedalaman (Bawah)</option>
-                    <option value="SGR01" selected>SGR01 - Gombak, Petaling, Sepang, Hulu Langat, Hulu Selangor, S.Alam</option>
-                    <option value="SGR02">SGR02 - Kuala Selangor, Sabak Bernam</option>
-                    <option value="SGR03">SGR03 - Klang, Kuala Langat</option>
-                    <option value="SWK01">SWK01 - Limbang, Lawas, Sundar, Trusan</option>
-                    <option value="SWK02">SWK02 - Miri, Niah, Bekenu, Sibuti, Marudi</option>
-                    <option value="SWK03">SWK03 - Pandan, Belaga, Suai, Tatau, Sebauh, Bintulu</option>
-                    <option value="SWK04">SWK04 - Sibu, Mukah, Dalat, Song, Igan, Oya, Balingian, Kanowit, Kapit</option>
-                    <option value="SWK05">SWK05 - Sarikei, Matu, Julau, Rajang, Daro, Bintangor, Belawai</option>
-                    <option value="SWK06">SWK06 - Lubok Antu, Sri Aman, Roban, Debak, Kabong, Lingga, Engkelili, Betong, Pusa, Saratok</option>
-                    <option value="SWK07">SWK07 - Serian, Simunjan, Samarahan, Sebuyau, Meludam</option>
-                    <option value="SWK08">SWK08 - Kuching, Bau, Lundu, Sematan</option>
-                    <option value="SWK09">SWK09 - Zon Khas (Kampung Patarikan)</option>
-                    <option value="TRG01">TRG01 - Kuala Terengganu, Marang, Kuala Nerus</option>
-                    <option value="TRG02">TRG02 - Besut, Setiu</option>
-                    <option value="TRG03">TRG03 - Hulu Terengganu</option>
-                    <option value="TRG04">TRG04 - Dungun, Kemaman</option>
-                    <option value="WLY01">WLY01 - Kuala Lumpur, Putrajaya</option>
-                    <option value="WLY02">WLY02 - Labuan</option>
+                    <optgroup label="Johor">
+                        <option value="JHR01">JHR01 - Pulau Aur dan Pulau Pemanggil</option>
+                        <option value="JHR02">JHR02 - Johor Bahru, Kota Tinggi, Kulai</option>
+                        <option value="JHR03">JHR03 - Kluang, Mersing</option>
+                        <option value="JHR04">JHR04 - Batu Pahat, Muar, Segamat, Gemas Johor</option>
+                    </optgroup>
+                    <optgroup label="Kedah">
+                        <option value="KDH01">KDH01 - Kota Setar, Kubang Pasu, Pokok Sena (Daerah Kecil)</option>
+                        <option value="KDH02">KDH02 - Kuala Muda, Yan, Pendang</option>
+                        <option value="KDH03">KDH03 - Padang Terap, Sik</option>
+                        <option value="KDH04">KDH04 - Baling</option>
+                        <option value="KDH05">KDH05 - Bandar Baharu, Kulim</option>
+                        <option value="KDH06">KDH06 - Langkawi</option>
+                        <option value="KDH07">KDH07 - Puncak Gunung Jerai</option>
+                    </optgroup>
+                    <optgroup label="Kelantan">
+                        <option value="KTN01">KTN01 - Bachok, Kota Bharu, Machang, Pasir Mas, Pasir Puteh, Tanah Merah, Tumpat, Kuala Krai, Mukim Chiku</option>
+                        <option value="KTN03">KTN03 - Gua Musang (Daerah Galas Dan Bertam), Jeli</option>
+                    </optgroup>
+                    <optgroup label="Melaka">
+                        <option value="MLK01">MLK01 - MELAKA</option>
+                    </optgroup>
+                    <optgroup label="Negeri Sembilan">
+                        <option value="NGS01">NGS01 - Tampin, Jempol</option>
+                        <option value="NGS02">NGS02 - Jelebu, Kuala Pilah, Port Dickson, Rembau, Seremban</option>
+                    </optgroup>
+                    <optgroup label="Pahang">
+                        <option value="PHG01">PHG01 - Pulau Tioman</option>
+                        <option value="PHG02">PHG02 - Kuantan, Pekan, Rompin, Muadzam Shah</option>
+                        <option value="PHG03">PHG03 - Jerantut, Temerloh, Maran, Bera, Chenor, Jengka</option>
+                        <option value="PHG04">PHG04 - Bentong, Lipis, Raub</option>
+                        <option value="PHG05">PHG05 - Genting Sempah, Janda Baik, Bukit Tinggi</option>
+                        <option value="PHG06">PHG06 - Cameron Highlands, Genting Highlands, Bukit Fraser</option>
+                    </optgroup>
+                    <optgroup label="Perlis">
+                        <option value="PLS01">PLS01 - Kangar, Padang Besar, Arau</option>
+                    </optgroup>
+                    <optgroup label="Pulau Pinang">
+                        <option value="PNG01">PNG01 - Seluruh Negeri Pulau Pinang</option>
+                    </optgroup>
+                    <optgroup label="Perak">
+                        <option value="PRK01">PRK01 - Tapah, Slim River, Tanjung Malim</option>
+                        <option value="PRK02">PRK02 - Kuala Kangsar, Sg. Siput (U), Ipoh, Batu Gajah, Kampar</option>
+                        <option value="PRK03">PRK03 - Lenggong, Pengkalan Hulu, Grik</option>
+                        <option value="PRK04">PRK04 - Temengor, Belum</option>
+                        <option value="PRK05">PRK05 - Kg. Gajah, Teluk Intan, Bagan Datuk, Seri Iskandar, Beruas, Parit, Lumut, Sitiawan, Pulau Pangkor</option>
+                        <option value="PRK06">PRK06 - Selama, Taiping, Bagan Serai, Parit Buntar</option>
+                        <option value="PRK07">PRK07 - Bukit Larut</option>
+                    </optgroup>
+                    <optgroup label="Sabah">
+                        <option value="SBH01">SBH01 - Bahagian Sandakan (Timur), Bukit Garam, Semawang, Temanggong, Tambisan, Bandar Sandakan, Sukau</option>
+                        <option value="SBH02">SBH02 - Beluran, Telupid, Pinangah, Terusan, Kuamut, Bahagian Sandakan (Barat)</option>
+                        <option value="SBH03">SBH03 - Lahad Datu, Silabukan, Kunak, Sahabat, Semporna, Tungku, Bahagian Tawau (Timur)</option>
+                        <option value="SBH04">SBH04 - Bandar Tawau, Balong, Merotai, Kalabakan, Bahagian Tawau (Barat)</option>
+                        <option value="SBH05">SBH05 - Kudat, Kota Marudu, Pitas, Pulau Banggi, Bahagian Kudat</option>
+                        <option value="SBH06">SBH06 - Gunung Kinabalu</option>
+                        <option value="SBH07">SBH07 - Kota Kinabalu, Ranau, Kota Belud, Tuaran, Penampang, Papar, Putatan, Bahagian Pantai Barat</option>
+                        <option value="SBH08">SBH08 - Pensiangan, Keningau, Tambunan, Nabawan, Bahagian Pedalaman (Atas)</option>
+                        <option value="SBH09">SBH09 - Beaufort, Kuala Penyu, Sipitang, Tenom, Long Pa Sia, Membakut, Weston, Bahagian Pedalaman (Bawah)</option>
+                    </optgroup>
+                    <optgroup label="Selangor">
+                        <option value="SGR01" selected>SGR01 - Gombak, Petaling, Sepang, Hulu Langat, Hulu Selangor, S.Alam</option>
+                        <option value="SGR02">SGR02 - Kuala Selangor, Sabak Bernam</option>
+                        <option value="SGR03">SGR03 - Klang, Kuala Langat</option>
+                    </optgroup>
+                    <optgroup label="Sarawak">
+                        <option value="SWK01">SWK01 - Limbang, Lawas, Sundar, Trusan</option>
+                        <option value="SWK02">SWK02 - Miri, Niah, Bekenu, Sibuti, Marudi</option>
+                        <option value="SWK03">SWK03 - Pandan, Belaga, Suai, Tatau, Sebauh, Bintulu</option>
+                        <option value="SWK04">SWK04 - Sibu, Mukah, Dalat, Song, Igan, Oya, Balingian, Kanowit, Kapit</option>
+                        <option value="SWK05">SWK05 - Sarikei, Matu, Julau, Rajang, Daro, Bintangor, Belawai</option>
+                        <option value="SWK06">SWK06 - Lubok Antu, Sri Aman, Roban, Debak, Kabong, Lingga, Engkelili, Betong, Pusa, Saratok</option>
+                        <option value="SWK07">SWK07 - Serian, Simunjan, Samarahan, Sebuyau, Meludam</option>
+                        <option value="SWK08">SWK08 - Kuching, Bau, Lundu, Sematan</option>
+                        <option value="SWK09">SWK09 - Zon Khas (Kampung Patarikan)</option>
+                    </optgroup>
+                    <optgroup label="Terengganu">
+                        <option value="TRG01">TRG01 - Kuala Terengganu, Marang, Kuala Nerus</option>
+                        <option value="TRG02">TRG02 - Besut, Setiu</option>
+                        <option value="TRG03">TRG03 - Hulu Terengganu</option>
+                        <option value="TRG04">TRG04 - Dungun, Kemaman</option>
+                    </optgroup>
+                    <optgroup label="Wilayah Persekutuan">
+                        <option value="WLY01">WLY01 - Kuala Lumpur, Putrajaya</option>
+                        <option value="WLY02">WLY02 - Labuan</option>
+                    </optgroup>
                 </select>
+                
+                <!-- Butang GPS Baru -->
+                <button id="gps-button" class="mt-4 w-full max-w-md mx-auto bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg>
+                    <span id="gps-button-text">Guna Lokasi Saya</span>
+                </button>
+                <!-- /Butang GPS Baru -->
+                
             </div>
         </header>
 
@@ -123,6 +166,8 @@
         <div class="glass-panel p-6 text-center">
             <h2 id="current-time" class="text-6xl md:text-8xl font-black tracking-tighter">--:--:--</h2>
             <p id="current-date" class="text-lg md:text-xl text-slate-300 mt-2">Memuatkan...</p>
+            <!-- Cadangan C: Elemen baru untuk tarikh Hijrah -->
+            <p id="hijri-date" class="text-lg md:text-xl text-cyan-400 mt-1"></p>
         </div>
 
         <!-- Prayer Times Panel -->
@@ -202,8 +247,9 @@
 
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        /* Cadangan G: Kemas kini versi Firebase */
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         // Konfigurasi Firebase untuk aplikasi web anda
         const firebaseConfig = {
@@ -228,10 +274,13 @@
         
         const prayerTimeDisplays = document.querySelectorAll('.time-display');
         const zoneSelect = document.getElementById('zone-select');
+        const gpsButton = document.getElementById('gps-button'); // Tambah butang GPS
+        const gpsButtonText = document.getElementById('gps-button-text'); // Tambah teks butang GPS
         const countdownDisplay = document.getElementById('countdown');
         const nextPrayerDisplay = document.getElementById('next-prayer');
         const currentTimeEl = document.getElementById('current-time');
         const currentDateEl = document.getElementById('current-date');
+        const hijriDateEl = document.getElementById('hijri-date'); // Cadangan C: Pembolehubah untuk tarikh Hijrah
         const scrollingTextDisplay = document.getElementById('scrolling-text-display');
         const staticMemoDisplay = document.getElementById('static-memo-display');
         const scrollingTextContainer = document.getElementById('scrolling-text-container');
@@ -260,6 +309,9 @@
                 if (!data.prayerTime || data.prayerTime.length === 0) throw new Error('Data API tidak sah.');
                 
                 const todayPrayer = data.prayerTime[0];
+                const hijriDate = todayPrayer.hijri; // Cadangan C: Ambil tarikh Hijri
+                hijriDateEl.textContent = hijriDate; // Cadangan C: Papar tarikh Hijri
+
                 const formatTime = (timeStr) => {
                     if (!timeStr) return '--:--';
                     const date = new Date(`1970-01-01T${timeStr}`);
@@ -272,12 +324,40 @@
                     Zohor: formatTime(todayPrayer.dhuhr),
                     Asar: formatTime(todayPrayer.asr),
                     Maghrib: formatTime(todayPrayer.maghrib),
-                    Isyak: formatTime(todayPrayer.isha)
+                    Isyak: formatTime(todayPrayer.isha),
+                    Hijri: hijriDate // Cadangan C & E: Simpan Hijri untuk cache
                 };
                 updatePrayerTimeUI();
                 findNextPrayer(new Date());
+
+                // Cadangan E: Simpan data berjaya ke cache
+                const cacheData = {
+                    date: new Date().toLocaleDateString('ms-MY'),
+                    times: prayerTimesData
+                };
+                localStorage.setItem('prayerCache', JSON.stringify(cacheData));
+
             } catch (err) {
                 console.error("Ralat ambil data:", err);
+
+                // Cadangan E: Cuba muat dari cache jika API gagal
+                const cached = localStorage.getItem('prayerCache');
+                if (cached) {
+                    const cacheData = JSON.parse(cached);
+                    // Hanya guna cache jika ia adalah untuk hari ini
+                    if (cacheData.date === new Date().toLocaleDateString('ms-MY')) {
+                        prayerTimesData = cacheData.times;
+                        updatePrayerTimeUI();
+                        if (prayerTimesData.Hijri) {
+                            hijriDateEl.textContent = prayerTimesData.Hijri;
+                        }
+                        findNextPrayer(new Date());
+                        nextPrayerDisplay.textContent = "Mod Luar Talian";
+                        return; // Berjaya muat dari cache
+                    }
+                }
+
+                // Jika tiada cache atau cache sudah lama
                 nextPrayerDisplay.textContent = `Ralat: ${err.message}`;
                 prayerTimeDisplays.forEach(el => el.textContent = 'Ralat');
             }
@@ -370,6 +450,7 @@
             });
         };
 
+        // --- PEMBETULAN: Menambah semula fungsi listenToFirebaseData ---
         const listenToFirebaseData = () => {
             const dataRef = ref(db, 'paparan/');
             onValue(dataRef, (snapshot) => {
@@ -414,6 +495,75 @@
                 console.error("Firebase read failed: " + error.name);
             });
         };
+        // --- /PEMBETULAN ---
+
+        // --- Fungsi Geolocation ---
+
+        const fetchZoneFromCoords = async (lat, long) => {
+            // Menggunakan API e-Solat untuk menukar koordinat ke zon
+            const apiUrl = `https://www.e-solat.gov.my/index.php?r=esolatApi/zonwaktusolat&lat=${lat}&long=${long}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('API e-Solat (koordinat) tidak berfungsi');
+                const data = await response.json();
+                
+                if (data && data.zone) {
+                    return data.zone; // Cth: "MLK01"
+                } else {
+                    throw new Error('Format data zon tidak sah');
+                }
+            } catch (err) {
+                console.error("Ralat ambil zon dari koordinat:", err);
+                gpsButtonText.textContent = "Gagal (API Zon)";
+                setTimeout(() => gpsButtonText.textContent = "Guna Lokasi Saya", 3000);
+                return null;
+            }
+        };
+
+        const geolocationSuccess = async (position) => {
+            const { latitude, longitude } = position.coords;
+            gpsButtonText.textContent = "Mencari zon...";
+            
+            const zone = await fetchZoneFromCoords(latitude, longitude);
+            
+            if (zone) {
+                zoneSelect.value = zone;
+                // Cetuskan event 'change' untuk memuatkan waktu solat bagi zon baru
+                zoneSelect.dispatchEvent(new Event('change'));
+                gpsButtonText.textContent = "Lokasi Ditemui!";
+                setTimeout(() => gpsButtonText.textContent = "Guna Lokasi Saya", 3000);
+            } else {
+                gpsButtonText.textContent = "Zon Tidak Ditemui";
+                setTimeout(() => gpsButtonText.textContent = "Guna Lokasi Saya", 3000);
+            }
+        };
+
+        const geolocationError = (err) => {
+            console.warn(`RALAT Geolocation (${err.code}): ${err.message}`);
+            let errorMsg = "Gagal dapatkan lokasi";
+            if (err.code === 1) { // 1: PERMISSION_DENIED
+                errorMsg = "Kebenaran Lokasi Ditolak";
+            } else if (err.code === 2) { // 2: POSITION_UNAVAILABLE
+                errorMsg = "Lokasi Tidak Tersedia";
+            }
+            gpsButtonText.textContent = errorMsg;
+            setTimeout(() => gpsButtonText.textContent = "Guna Lokasi Saya", 3000);
+        };
+
+        const handleLocationClick = () => {
+            if ('geolocation' in navigator) {
+                gpsButtonText.textContent = "Meminta kebenaran...";
+                navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, {
+                    enableHighAccuracy: false, // Guna 'false' untuk jimat bateri & lebih pantas
+                    timeout: 10000, // 10 saat
+                    maximumAge: 0 // Paksa bacaan baru
+                });
+            } else {
+                gpsButtonText.textContent = "GPS Tidak Disokong";
+                setTimeout(() => gpsButtonText.textContent = "Guna Lokasi Saya", 3000);
+            }
+        };
+
 
         // --- Notification Functions ---
         const initAudio = () => {
@@ -444,12 +594,23 @@
             notificationModal.style.display = 'none';
         };
         
-        zoneSelect.addEventListener('change', (e) => fetchPrayerTimes(e.target.value));
+        // Cadangan B: Simpan pilihan zon ke localStorage
+        zoneSelect.addEventListener('change', (e) => {
+            const selectedZone = e.target.value;
+            localStorage.setItem('prayerZone', selectedZone); // Simpan pilihan
+            fetchPrayerTimes(selectedZone);
+        });
         notificationCloseBtn.addEventListener('click', hideNotification);
+        gpsButton.addEventListener('click', handleLocationClick); // Tambah listener butang GPS
         
         window.addEventListener('DOMContentLoaded', () => {
             initAudio();
-            const initialZone = zoneSelect.value || 'SGR01';
+
+            // Cadangan B: Muat zon dari localStorage semasa mula
+            const savedZone = localStorage.getItem('prayerZone');
+            const initialZone = savedZone || 'SGR01';
+            zoneSelect.value = initialZone; // Tetapkan nilai dropdown
+            
             fetchPrayerTimes(initialZone);
             updateClock();
             listenToFirebaseData(); // Mula mendengar data dari Firebase
